@@ -1,0 +1,31 @@
+workflows:
+  version: 2
+  main:
+    jobs:
+      - release:
+          filters:
+            branches:
+              only: master
+
+version: 2
+jobs:
+  release:
+    working_directory: /go/src/github.com/youyo/homebrew-gaws
+    docker:
+      - image: circleci/golang:1
+    steps:
+      - checkout
+      - run:
+          name: Release
+          command: |
+            wget https://github.com/youyo/gaws/releases/download/${GAWS_VERSION}/gaws_darwin_amd64.zip
+            unzip gaws_darwin_amd64.zip
+            checksum=$(shasum -a 256 gaws | cut -d' ' -f1)
+            cat gaws.rb.template | sed "s|__VERSION__|${GAWS_VERSION}|g" | sed "s|__SHA256__|${checksum}|g" | tee gaws.rb
+            rm -f gaws gaws_darwin_amd64.zip
+            git config --global user.email 1003ni2@gmail.com
+            git config --global user.name youyo
+            git add .
+            git commit -m "[skip ci] bump up ${GAWS_VERSION}"
+            git tag ${GAWS_VERSION}
+            git push origin master --tags
