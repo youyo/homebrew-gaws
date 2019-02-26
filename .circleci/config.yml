@@ -19,10 +19,9 @@ jobs:
           name: Release
           command: |
             wget https://github.com/youyo/gaws/releases/download/${GAWS_VERSION}/gaws_darwin_amd64.zip
-            unzip gaws_darwin_amd64.zip
-            checksum=$(shasum -a 256 gaws_darwin_amd64/gaws | cut -d' ' -f1)
+            checksum=$(shasum -a 256 gaws_darwin_amd64.zip | cut -d' ' -f1)
             cat gaws.rb.template | sed "s|__VERSION__|${GAWS_VERSION}|g" | sed "s|__SHA256__|${checksum}|g" | tee gaws.rb
-            rm -rf gaws_darwin_amd64/ gaws_darwin_amd64.zip
+            rm -f gaws_darwin_amd64.zip
             git config --global user.email 1003ni2@gmail.com
             git config --global user.name youyo
             git add .
