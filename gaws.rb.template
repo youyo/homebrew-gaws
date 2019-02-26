@@ -1,9 +1,8 @@
 class Gaws < Formula
   desc "gaws is a command to complement aws-cli."
   homepage "https://github.com/youyo/gaws"
-  url "https://github.com/youyo/gaws/releases/download/__VERSION__/gaws"
+  url "https://github.com/youyo/gaws/releases/download/__VERSION__/gaws_darwin_amd64.zip"
   sha256 "__SHA256__"
-  depends_on "peco"
 
   def install
     bin.install "gaws"
